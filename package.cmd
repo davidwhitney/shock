@@ -1,0 +1,1 @@
+.nuget\nuget pack "src\Shock\Shock.csproj" -Symbols -OutputDirectory artifacts -Build -IncludeReferencedProjects -NonInteractive
