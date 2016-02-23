@@ -43,6 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\IDependencyResolver.cs" />
+    <Compile Include="ArgumentParsing\Arguments.cs" />
+    <Compile Include="Configuration\ILoadConfiguration.cs" />
+    <Compile Include="DefibrillatorFactory.cs" />
+    <Compile Include="Discovery\IDetectTasks.cs" />
+    <Compile Include="Discovery\IDiscoverTasks.cs" />
+    <Compile Include="Discovery\ILoadTaskSources.cs" />
+    <Compile Include="Execution\IExecuteATask.cs" />
+    <Compile Include="Execution\ISelectTasksToRun.cs" />
+    <Compile Include="Execution\SelectTasksToRun.cs" />
+    <Compile Include="Execution\TaskStatus.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Defibrillator.cs" />
@@ -51,11 +62,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Activation\" />
-    <Folder Include="Configuration\" />
     <Folder Include="Conventions\" />
-    <Folder Include="Discovery\" />
-    <Folder Include="Execution\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

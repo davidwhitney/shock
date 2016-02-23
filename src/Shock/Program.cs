@@ -1,12 +1,17 @@
 ﻿using System;
+using Shock.ArgumentParsing;
 
 namespace Shock
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main(string[] cliArgs)
         {
-            new Defibrillator(args).Shock();
+            var args = new Arguments(cliArgs);
+
+            new DefibrillatorFactory()
+                .Manufacture()
+                .Shock(args);
 
             #if DEBUG
             Console.WriteLine("Press ANY key to exit.");
