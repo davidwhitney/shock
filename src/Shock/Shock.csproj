@@ -43,13 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\ActivatorDependencyResolver.cs" />
     <Compile Include="Activation\IDependencyResolver.cs" />
     <Compile Include="ArgumentParsing\Arguments.cs" />
-    <Compile Include="Configuration\ILoadConfiguration.cs" />
+    <Compile Include="ArgumentParsing\DefaultArgumentParser.cs" />
+    <Compile Include="ArgumentParsing\IArgumentParser.cs" />
+    <Compile Include="Conventions\ConventionDiscoverer.cs" />
+    <Compile Include="Conventions\ActiveConventions.cs" />
+    <Compile Include="Conventions\IConventionDiscoverer.cs" />
     <Compile Include="DefibrillatorFactory.cs" />
-    <Compile Include="Discovery\IDetectTasks.cs" />
-    <Compile Include="Discovery\IDiscoverTasks.cs" />
-    <Compile Include="Discovery\ILoadTaskSources.cs" />
+    <Compile Include="EnvironmentDiscovery\DetectAndLoadRelevantAssemblies.cs" />
+    <Compile Include="ExecutionEnvironment.cs" />
+    <Compile Include="Execution\DefaultTaskExecutor.cs" />
+    <Compile Include="Logging\Console.cs" />
+    <Compile Include="Logging\IOutput.cs" />
+    <Compile Include="TaskDiscovery\DefaultTaskDiscoverer.cs" />
+    <Compile Include="TaskDiscovery\IDiscoverTasks.cs" />
+    <Compile Include="EnvironmentDiscovery\IDetectAndLoadRelevantAssemblies.cs" />
     <Compile Include="Execution\IExecuteATask.cs" />
     <Compile Include="Execution\ISelectTasksToRun.cs" />
     <Compile Include="Execution\SelectTasksToRun.cs" />
@@ -61,9 +71,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Conventions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

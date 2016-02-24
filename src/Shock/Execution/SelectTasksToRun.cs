@@ -10,9 +10,25 @@ namespace Shock.Execution
         public List<MethodInfo> SelectTasksFrom(List<MethodInfo> tasksFromDomain, Arguments args)
         {
             var matchingTasks = new List<MethodInfo>();
-            matchingTasks.AddRange(tasksFromDomain.Where(x => args.Keys.Contains(x.Name)));
+            matchingTasks.AddRange(tasksFromDomain.Where(x => MatchesName(args, x)));
 
             return matchingTasks;
+        }
+
+        private static bool MatchesName(Arguments args, MethodInfo x)
+        {
+            if (args.Keys.Contains(x.Name))
+            {
+                return true;
+            }
+
+            if (x.DeclaringType == null)
+            {
+                return false;
+            }
+
+            return args.Keys.Contains(x.DeclaringType.Name + "." + x.Name)
+                   || args.Keys.Contains(x.DeclaringType.Namespace + "." + x.DeclaringType.Name + "." + x.Name);
         }
     }
 }

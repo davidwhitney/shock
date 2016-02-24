@@ -56,18 +56,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentParsing\ArgumentsTests.cs" />
+    <Compile Include="ArgumentParsing\DefaultArgumentParserTests.cs" />
     <Compile Include="DefibrillatorTests.cs" />
     <Compile Include="Execution\SelectTasksToRunTests.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass.cs" />
+    <Compile Include="FakesAndStubs\FakeTaskClass2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Activation\" />
     <Folder Include="Configuration\" />
-    <Folder Include="Conventions\" />
-    <Folder Include="Discovery\" />
+    <Folder Include="TaskDiscovery\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using Shock.ArgumentParsing;
 
 namespace Shock
 {
@@ -7,16 +6,19 @@ namespace Shock
     {
         public static void Main(string[] cliArgs)
         {
-            var args = new Arguments(cliArgs);
+            using (var env = new ExecutionEnvironment(cliArgs))
+            {
+                var args = env.Conventions.ArgumentParser.Parse(cliArgs);
 
-            new DefibrillatorFactory()
-                .Manufacture()
-                .Shock(args);
+                env.DefibrillatorFactory
+                    .Manufacture()
+                    .Shock(args);
 
-            #if DEBUG
-            Console.WriteLine("Press ANY key to exit.");
-            Console.ReadKey();
-            #endif
+                #if DEBUG
+                Console.WriteLine("Press ANY key to exit.");
+                Console.ReadKey();
+                #endif
+            }
         }
     }
 }

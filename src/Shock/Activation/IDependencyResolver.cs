@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shock.Activation
+﻿namespace Shock.Activation
 {
     public interface IDependencyResolver
     {
+        T Create<T>();
     }
 }

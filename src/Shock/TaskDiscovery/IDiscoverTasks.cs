@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Shock.ArgumentParsing;
 
-namespace Shock.Discovery
+namespace Shock.TaskDiscovery
 {
     public interface IDiscoverTasks
     {

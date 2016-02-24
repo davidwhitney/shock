@@ -3,8 +3,8 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Shock.ArgumentParsing;
-using Shock.Discovery;
 using Shock.Execution;
+using Shock.TaskDiscovery;
 using Shock.Test.Unit.FakesAndStubs;
 
 namespace Shock.Test.Unit

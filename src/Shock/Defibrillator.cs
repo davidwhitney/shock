@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Shock.ArgumentParsing;
-using Shock.Discovery;
 using Shock.Execution;
+using Shock.TaskDiscovery;
 
 namespace Shock
 {

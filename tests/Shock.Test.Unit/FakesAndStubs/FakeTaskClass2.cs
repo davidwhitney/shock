@@ -1,6 +1,6 @@
 ﻿namespace Shock.Test.Unit.FakesAndStubs
 {
-    public class FakeTaskClass
+    public class FakeTaskClass2
     {
         public void DoSomething()
         {

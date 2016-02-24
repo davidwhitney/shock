@@ -14,17 +14,6 @@ namespace Shock.ArgumentParsing
         public Arguments(string[] raw)
         {
             Raw = raw ?? new string[0];
-            Parse(raw);
-        }
-
-        private void Parse(string[] raw)
-        {
-            if (raw == null) return;
-
-            foreach (var value in raw)
-            {
-                Add(value, new Nothing());
-            }
         }
 
         public static Arguments With(string argument)
