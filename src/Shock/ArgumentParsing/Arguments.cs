@@ -16,9 +16,11 @@ namespace Shock.ArgumentParsing
             Raw = raw ?? new string[0];
         }
 
-        public static Arguments With(string argument)
+        public static Arguments With(string argument, object value = null)
         {
-            return new Arguments {{argument, new Nothing()}};
+            value = value ?? new Nothing();
+
+            return new Arguments {{argument, value}};
         }
 
         public class Nothing { }

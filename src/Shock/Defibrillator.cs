@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Shock.ArgumentParsing;
 using Shock.Execution;
 using Shock.Logging;
@@ -15,6 +13,7 @@ namespace Shock
         private readonly ISelectTasksToRun _taskSelector;
         private readonly IExecuteATask _executor;
         private readonly IOutput _output;
+        private readonly UsageExamples _usage;
 
         public Defibrillator(
             IDiscoverTasks discoverer,
@@ -26,28 +25,27 @@ namespace Shock
             _taskSelector = taskSelector;
             _executor = executor;
             _output = output;
+            _usage = new UsageExamples(_output);
         }
         
         public void Shock(Arguments args)
         {
             var allTasks = _discoverer.FindTasks(args);
+            if (!allTasks.Any())
+            {
+                _usage.Basic();
+                return;
+            }
+
             var tasksToExecute = _taskSelector.SelectTasksFrom(allTasks, args);
-            NotifyIfAllTasksFiltered(allTasks, tasksToExecute);
+            if (tasksToExecute.Count == 0)
+            {
+                _usage.Tasks(allTasks);
+                return;
+            }
 
             var results = tasksToExecute.Select(t => _executor.TryExecuteTask(t, args)).ToList();
             ReportResults(results);
-        }
-
-        private void NotifyIfAllTasksFiltered(List<MethodInfo> allTasks, List<MethodInfo> tasksToExecute)
-        {
-            if (allTasks.Count <= 0 || tasksToExecute.Count != 0) return;
-
-            _output.WriteLine("tasks:" + Environment.NewLine);
-            foreach (var task in allTasks)
-            {
-                _output.WriteLine(
-                    $"\t{task.DeclaringType.Namespace}.{task.DeclaringType.Name}.{task.Name}{Environment.NewLine}");
-            }
         }
 
         private void ReportResults(List<TaskStatus> results)

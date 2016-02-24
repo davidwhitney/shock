@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="ArgumentParsing\DefaultArgumentParserTests.cs" />
     <Compile Include="DefibrillatorTests.cs" />
+    <Compile Include="Execution\DefaultTaskExecutorTests.cs" />
     <Compile Include="Execution\SelectTasksToRunTests.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass2.cs" />

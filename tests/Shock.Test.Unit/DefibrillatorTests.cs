@@ -21,7 +21,7 @@ namespace Shock.Test.Unit
             _tasks = new List<MethodInfo> { methodInfo };
             _args = new Arguments {{"DoSomething", new Arguments.Nothing()}};
 
-            Mock<IExecuteATask>();
+            Mock<IExecuteATask>().Setup(x => x.TryExecuteTask(methodInfo, _args)).Returns(new TaskStatus(methodInfo));
             Mock<IDiscoverTasks>().Setup(x => x.FindTasks(_args)).Returns(_tasks);
             Mock<ISelectTasksToRun>().Setup(x => x.SelectTasksFrom(_tasks, _args)).Returns(_tasks);
         }

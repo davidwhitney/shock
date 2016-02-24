@@ -9,11 +9,13 @@ namespace Shock.EnvironmentDiscovery
     {
         public AppDomain LoadEnvironmentFrom(string[] args)
         {
-            var loadThese = new List<string>
-            {
-                args.FirstOrDefault(x => x.EndsWith(".dll"))
-            };
+            var loadThese = new List<string>();
 
+            if(args.FirstOrDefault(x => x.EndsWith(".dll")) != null)
+            {
+                loadThese.Add(args.FirstOrDefault(x => x.EndsWith(".dll")));
+            }
+            
             loadThese.RemoveAll(x => x == null);
 
             loadThese.ForEach(assemblyFile =>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Shock.ArgumentParsing;
 
@@ -11,13 +12,29 @@ namespace Shock.Execution
             try
             {
                 var instance = Activator.CreateInstance(method.DeclaringType);
-                method.Invoke(instance, null);
+                var parameters = GetMethodParameters(method, args);
+                method.Invoke(instance, parameters);
                 return new TaskStatus(method);
             }
             catch (Exception ex)
             {
-                return new TaskStatus(method, false, ex);
+                return new TaskStatus(method, false, ex.InnerException);
             }
+        }
+
+        private static object[] GetMethodParameters(MethodInfo info, Arguments args)
+        {
+            var parameters = new List<object>();
+            var parameterInfos = info.GetParameters();
+
+            foreach (var paramInfo in parameterInfos)
+            {
+                object value;
+                args.TryGetValue(paramInfo.Name, out value);
+                parameters.Add(value);
+            }
+
+            return parameters.ToArray();
         }
     }
 }
