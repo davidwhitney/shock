@@ -2,7 +2,10 @@
 
 namespace Shock.Test.Unit.FakesAndStubs
 {
-    public class FakeTaskClass
+    /// <summary>
+    /// Detected naming convention "Ends with 'Tasks'"
+    /// </summary>
+    public class FakeTaskClassTasks
     {
         public void DoSomething()
         {

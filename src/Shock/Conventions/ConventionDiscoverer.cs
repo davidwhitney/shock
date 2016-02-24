@@ -4,7 +4,7 @@ namespace Shock.Conventions
     {
         public ActiveConventions AdjustConventions(ActiveConventions conventions)
         {
-            throw new System.NotImplementedException();
+            return conventions;
         }
     }
 }

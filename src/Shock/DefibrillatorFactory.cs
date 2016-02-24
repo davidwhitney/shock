@@ -17,7 +17,8 @@ namespace Shock
             return new Defibrillator(
                 Conventions.TaskDiscoverer,
                 Conventions.TaskSelector,
-                Conventions.TaskRunner);
+                Conventions.TaskRunner,
+                Conventions.Output);
 
             // Detect execution environment and Conventions
             // Can we see log4net? nlog? If not, console + diagnostics writers

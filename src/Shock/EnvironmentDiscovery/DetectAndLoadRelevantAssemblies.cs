@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Shock.EnvironmentDiscovery
 {
@@ -6,7 +9,20 @@ namespace Shock.EnvironmentDiscovery
     {
         public AppDomain LoadEnvironmentFrom(string[] args)
         {
-            throw new NotImplementedException();
+            var loadThese = new List<string>
+            {
+                args.FirstOrDefault(x => x.EndsWith(".dll"))
+            };
+
+            loadThese.RemoveAll(x => x == null);
+
+            loadThese.ForEach(assemblyFile =>
+            {
+                var assemblyName = AssemblyName.GetAssemblyName(assemblyFile);
+                AppDomain.CurrentDomain.Load(assemblyName);
+            });
+
+            return AppDomain.CurrentDomain;
         }
     }
 }
