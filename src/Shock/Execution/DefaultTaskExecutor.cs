@@ -31,7 +31,9 @@ namespace Shock.Execution
             {
                 object value;
                 args.TryGetValue(paramInfo.Name, out value);
-                parameters.Add(value);
+
+                var typedValue = Convert.ChangeType(value, paramInfo.ParameterType);
+                parameters.Add(typedValue);
             }
 
             return parameters.ToArray();
