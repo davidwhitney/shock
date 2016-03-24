@@ -60,18 +60,20 @@
     <Compile Include="DefibrillatorTests.cs" />
     <Compile Include="Execution\DefaultTaskExecutorTests.cs" />
     <Compile Include="Execution\SelectTasksToRunTests.cs" />
+    <Compile Include="FakesAndStubs\AllTheseAreValidBecauseTypeEndsInTasks.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass2.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClassDueToAttributes.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClassTasks.cs" />
     <Compile Include="FakesAndStubs\TaskAttribute.cs" />
+    <Compile Include="FakesAndStubs\TypeNameContainsTaskSoAllTheseMethodsAreSelected.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskDiscovery\DefaultTaskDiscovererTests.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Activation\" />
     <Folder Include="Configuration\" />
-    <Folder Include="TaskDiscovery\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -16,27 +16,33 @@ namespace Shock.TaskDiscovery
             Matches = new List<Func<MethodInfo, bool>>
             {
                 m => m.DeclaringType != null && m.DeclaringType.Name.Contains("Task"),
-                m => m.DeclaringType != null && m.DeclaringType.Name.EndsWith("Tasks"),
                 m => m.GetCustomAttributes().Any(a => a.GetType().Name == "TaskAttribute")
             };
 
             ExcludeTypes = new List<Func<Type, bool>>
             {
-                t => t.Namespace.StartsWith("System."),
                 t => t.FullName.StartsWith("System."),
                 t => t.FullName.StartsWith("Accessibility."),
                 t => t.Namespace.StartsWith("Microsoft."),
                 t => t.Assembly.FullName.StartsWith("Shock, Version=")
             };
-        } 
+        }
 
         public List<MethodInfo> FindTasks(Arguments args)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
-            var types = assemblies.SelectMany(a => a.GetExportedTypes()).ToList();
-            FilterCandidateTypes(types);
+            return FindTasks(args, AppDomain.CurrentDomain.GetAssemblies());
+        }
+
+        public List<MethodInfo> FindTasks(Arguments args, IEnumerable<Assembly> fromAssemblies)
+        {
+            return FindTasks(args, fromAssemblies.SelectMany(a => a.GetExportedTypes()).ToList());
+        }
+
+        public List<MethodInfo> FindTasks(Arguments args, List<Type> fromTypes)
+        {
+            FilterCandidateTypes(fromTypes);
             
-            var methods = types.SelectMany(f => f.GetMethods(BindingFlags.Public | BindingFlags.Instance)).ToList();
+            var methods = fromTypes.SelectMany(f => f.GetMethods(BindingFlags.Public | BindingFlags.Instance)).ToList();
 
             var tasks = new List<MethodInfo>();
             foreach (var method in methods)
