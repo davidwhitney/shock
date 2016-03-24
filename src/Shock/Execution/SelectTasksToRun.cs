@@ -22,11 +22,6 @@ namespace Shock.Execution
                 return true;
             }
 
-            if (x.DeclaringType == null)
-            {
-                return false;
-            }
-
             return args.Keys.Contains(x.DeclaringType.Name + "." + x.Name)
                    || args.Keys.Contains(x.DeclaringType.Namespace + "." + x.DeclaringType.Name + "." + x.Name);
         }

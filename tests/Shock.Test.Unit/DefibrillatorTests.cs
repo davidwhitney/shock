@@ -33,5 +33,11 @@ namespace Shock.Test.Unit
 
             Mock<IExecuteATask>().Verify(x=>x.TryExecuteTask(_tasks[0], _args), Times.Once);
         }
+
+        [Test]
+        public void Shock_NoTasksDiscovered_OutputsUsage()
+        {
+            Sut.Shock(_args);
+        }
     }
 }
