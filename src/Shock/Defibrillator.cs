@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Shock.ArgumentParsing;
 using Shock.Execution;
 using Shock.Logging;
@@ -15,7 +16,9 @@ namespace Shock
         private readonly IOutput _output;
         private readonly UsageExamples _usage;
 
-        public List<TaskStatus> Results { get; private set; } = new List<TaskStatus>(); 
+        public List<MethodInfo> DiscoveredTasks { get; private set; } = new List<MethodInfo>(); 
+        public List<MethodInfo> SelectedTasks { get; private set; } = new List<MethodInfo>();
+        public List<TaskStatus> Results { get; private set; } = new List<TaskStatus>();
 
         public Defibrillator(
             IDiscoverTasks discoverer,
@@ -32,21 +35,21 @@ namespace Shock
         
         public void Shock(Arguments args)
         {
-            var allTasks = _discoverer.FindTasks(args);
-            if (!allTasks.Any())
+            DiscoveredTasks = _discoverer.FindTasks(args);
+            if (!DiscoveredTasks.Any())
             {
                 _usage.Basic();
                 return;
             }
 
-            var tasksToExecute = _taskSelector.SelectTasksFrom(allTasks, args);
-            if (tasksToExecute.Count != 1)
+            SelectedTasks = _taskSelector.SelectTasksFrom(DiscoveredTasks, args);
+            if (SelectedTasks.Count != 1)
             {
-                _usage.Tasks(allTasks);
+                _usage.Tasks(DiscoveredTasks);
                 return;
             }
 
-            Results = tasksToExecute.Select(t => _executor.TryExecuteTask(t, args)).ToList();
+            Results = SelectedTasks.Select(t => _executor.TryExecuteTask(t, args)).ToList();
             ReportResults();
         }
 

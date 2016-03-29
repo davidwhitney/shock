@@ -28,16 +28,6 @@ namespace Shock.TaskDiscovery
             };
         }
 
-        public List<MethodInfo> FindTasks(Arguments args)
-        {
-            return FindTasks(args, AppDomain.CurrentDomain.GetAssemblies());
-        }
-
-        public List<MethodInfo> FindTasks(Arguments args, IEnumerable<Assembly> fromAssemblies)
-        {
-            return FindTasks(args, fromAssemblies.SelectMany(a => a.GetExportedTypes()).ToList());
-        }
-
         public List<MethodInfo> FindTasks(Arguments args, List<Type> fromTypes)
         {
             FilterCandidateTypes(fromTypes);
