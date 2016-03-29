@@ -1,13 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Shock.AppDomainShims;
 
 namespace Shock.EnvironmentDiscovery
 {
     public class DetectAndLoadRelevantAssemblies : IDetectAndLoadRelevantAssemblies
     {
-        public AppDomain LoadEnvironmentFrom(string[] args)
+        private readonly IAppDomainWrapper _appDomain;
+        private readonly IAssemblyWrapper _assembly;
+
+        public DetectAndLoadRelevantAssemblies(IAppDomainWrapper appDomain, IAssemblyWrapper assembly)
+        {
+            _appDomain = appDomain;
+            _assembly = assembly;
+        }
+
+        public void LoadEnvironmentFrom(string[] args)
         {
             var loadThese = new List<string>();
 
@@ -20,11 +28,9 @@ namespace Shock.EnvironmentDiscovery
 
             loadThese.ForEach(assemblyFile =>
             {
-                var assemblyName = AssemblyName.GetAssemblyName(assemblyFile);
-                AppDomain.CurrentDomain.Load(assemblyName);
+                var assemblyName = _assembly.AssemblyNameGetAssemblyName(assemblyFile);
+                _appDomain.CurrentDomainLoad(assemblyName);
             });
-
-            return AppDomain.CurrentDomain;
         }
     }
 }

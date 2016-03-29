@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Shock.ArgumentParsing;
+using Shock.TaskDiscovery;
 
-namespace Shock.TaskDiscovery
+namespace Shock.AppDomainShims
 {
-    public static class DiscoverTasksAppDomainFacingExtensions
+    public static class DiscoverTasksAppDomainExtensions
     {
         public static List<MethodInfo> FindTasks(this IDiscoverTasks d, Arguments args)
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Shock.AppDomainShims;
 using Shock.ArgumentParsing;
 using Shock.Execution;
 using Shock.Logging;

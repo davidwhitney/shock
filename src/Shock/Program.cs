@@ -9,10 +9,7 @@ namespace Shock
             using (var env = new ExecutionEnvironment(cliArgs))
             {
                 var args = env.Conventions.ArgumentParser.Parse(cliArgs);
-
-                env.DefibrillatorFactory
-                    .Manufacture()
-                    .Shock(args);
+                env.Defibrillator.Shock(args);
 
                 #if DEBUG
                 Console.WriteLine("Press ANY key to exit.");

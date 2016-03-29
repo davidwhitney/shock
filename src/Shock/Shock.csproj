@@ -45,13 +45,16 @@
   <ItemGroup>
     <Compile Include="Activation\ActivatorDependencyResolver.cs" />
     <Compile Include="Activation\IDependencyResolver.cs" />
+    <Compile Include="AppDomainShims\AppDomainWrapper.cs" />
+    <Compile Include="AppDomainShims\AssemblyWrapper.cs" />
+    <Compile Include="AppDomainShims\IAppDomainWrapper.cs" />
+    <Compile Include="AppDomainShims\IAssemblyWrapper.cs" />
     <Compile Include="ArgumentParsing\Arguments.cs" />
     <Compile Include="ArgumentParsing\DefaultArgumentParser.cs" />
     <Compile Include="ArgumentParsing\IArgumentParser.cs" />
     <Compile Include="Conventions\ConventionDiscoverer.cs" />
     <Compile Include="Conventions\ActiveConventions.cs" />
     <Compile Include="Conventions\IConventionDiscoverer.cs" />
-    <Compile Include="DefibrillatorFactory.cs" />
     <Compile Include="EnvironmentDiscovery\DetectAndLoadRelevantAssemblies.cs" />
     <Compile Include="ExecutionEnvironment.cs" />
     <Compile Include="Execution\DefaultTaskExecutor.cs" />
@@ -59,7 +62,7 @@
     <Compile Include="Logging\IOutput.cs" />
     <Compile Include="Logging\ListOutput.cs" />
     <Compile Include="TaskDiscovery\DefaultTaskDiscoverer.cs" />
-    <Compile Include="TaskDiscovery\DiscoverTasksAppDomainFacingExtensions.cs" />
+    <Compile Include="AppDomainShims\DiscoverTasksAppDomainExtensions.cs" />
     <Compile Include="TaskDiscovery\IDiscoverTasks.cs" />
     <Compile Include="EnvironmentDiscovery\IDetectAndLoadRelevantAssemblies.cs" />
     <Compile Include="Execution\IExecuteATask.cs" />

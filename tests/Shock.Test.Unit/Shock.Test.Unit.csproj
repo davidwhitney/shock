@@ -67,6 +67,7 @@
     <Compile Include="FakesAndStubs\FakeTaskClassTasks.cs" />
     <Compile Include="FakesAndStubs\TaskAttribute.cs" />
     <Compile Include="FakesAndStubs\TypeNameContainsTaskSoAllTheseMethodsAreSelected.cs" />
+    <Compile Include="Logging\ConsoleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskDiscovery\DefaultTaskDiscovererTests.cs" />
     <Compile Include="Tests.cs" />
