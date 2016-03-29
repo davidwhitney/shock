@@ -4,7 +4,7 @@ namespace Shock.ArgumentParsing
 {
     public class Arguments : Dictionary<string, object>
     {
-        public string[] Raw { get; private set; }
+        public string[] Raw { get; set; }
 
         public Arguments()
         {

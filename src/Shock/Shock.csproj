@@ -57,6 +57,7 @@
     <Compile Include="Execution\DefaultTaskExecutor.cs" />
     <Compile Include="Logging\Console.cs" />
     <Compile Include="Logging\IOutput.cs" />
+    <Compile Include="Logging\ListOutput.cs" />
     <Compile Include="TaskDiscovery\DefaultTaskDiscoverer.cs" />
     <Compile Include="TaskDiscovery\IDiscoverTasks.cs" />
     <Compile Include="EnvironmentDiscovery\IDetectAndLoadRelevantAssemblies.cs" />

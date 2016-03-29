@@ -15,6 +15,8 @@ namespace Shock
         private readonly IOutput _output;
         private readonly UsageExamples _usage;
 
+        public List<TaskStatus> Results { get; private set; } = new List<TaskStatus>(); 
+
         public Defibrillator(
             IDiscoverTasks discoverer,
             ISelectTasksToRun taskSelector,
@@ -38,19 +40,19 @@ namespace Shock
             }
 
             var tasksToExecute = _taskSelector.SelectTasksFrom(allTasks, args);
-            if (tasksToExecute.Count == 0)
+            if (tasksToExecute.Count != 1)
             {
                 _usage.Tasks(allTasks);
                 return;
             }
 
-            var results = tasksToExecute.Select(t => _executor.TryExecuteTask(t, args)).ToList();
-            ReportResults(results);
+            Results = tasksToExecute.Select(t => _executor.TryExecuteTask(t, args)).ToList();
+            ReportResults();
         }
 
-        private void ReportResults(List<TaskStatus> results)
+        private void ReportResults()
         {
-            foreach (var result in results)
+            foreach (var result in Results)
             {
                 var msg = result.ExecutedSuccessfully ? "Executed" : "Failed";
                 _output.WriteLine($"{msg}: {result.Method.DeclaringType.FullName}.{result.Method.Name}");
