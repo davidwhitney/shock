@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Shock.AppDomainShims;
 
 namespace Shock.EnvironmentDiscovery
@@ -8,6 +9,8 @@ namespace Shock.EnvironmentDiscovery
     {
         private readonly IAppDomainWrapper _appDomain;
         private readonly IAssemblyWrapper _assembly;
+
+        public List<AssemblyName> LoadedAssemblies { get; private set; } = new List<AssemblyName>();
 
         public DetectAndLoadRelevantAssemblies(IAppDomainWrapper appDomain, IAssemblyWrapper assembly)
         {
@@ -30,6 +33,7 @@ namespace Shock.EnvironmentDiscovery
             {
                 var assemblyName = _assembly.AssemblyNameGetAssemblyName(assemblyFile);
                 _appDomain.CurrentDomainLoad(assemblyName);
+                LoadedAssemblies.Add(assemblyName);
             });
         }
     }

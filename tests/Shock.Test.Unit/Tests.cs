@@ -50,5 +50,10 @@ namespace Shock.Test.Unit
         {
             Fixture.Register(() => instance);
         }
+
+        protected void AddStub<TMockType>(Func<TMockType> instanceFunc) where TMockType : class
+        {
+            Fixture.Register(instanceFunc);
+        }
     }
 }

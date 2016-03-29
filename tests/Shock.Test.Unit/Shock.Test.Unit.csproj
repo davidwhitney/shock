@@ -58,7 +58,11 @@
   <ItemGroup>
     <Compile Include="Activation\ActivatorDependencyResolverTests.cs" />
     <Compile Include="ArgumentParsing\DefaultArgumentParserTests.cs" />
+    <Compile Include="Conventions\ActiveConventionsTests.cs" />
+    <Compile Include="Conventions\ConventionDiscovererTests.cs" />
     <Compile Include="DefibrillatorTests.cs" />
+    <Compile Include="EnvironmentDiscovery\DetectAndLoadRelevantAssembliesTests.cs" />
+    <Compile Include="ExecutionEnvironmentTests.cs" />
     <Compile Include="Execution\DefaultTaskExecutorTests.cs" />
     <Compile Include="Execution\SelectTasksToRunTests.cs" />
     <Compile Include="FakesAndStubs\AllTheseAreValidBecauseTypeEndsInTasks.cs" />
@@ -73,9 +77,7 @@
     <Compile Include="TaskDiscovery\DefaultTaskDiscovererTests.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
