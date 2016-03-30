@@ -2,6 +2,7 @@
 using Shock.AppDomainShims;
 using Shock.Conventions;
 using Shock.EnvironmentDiscovery;
+using Shock.Logging;
 
 namespace Shock
 {
@@ -12,7 +13,7 @@ namespace Shock
 
         public ExecutionEnvironment(string[] cliArgs)
             : this(cliArgs, 
-                  new DetectAndLoadRelevantAssemblies(new AppDomainWrapper(), new AssemblyWrapper()),
+                  new DetectAndLoadRelevantAssemblies(new AppDomainWrapper(), new AssemblyWrapper(), new FileSystemWrapper(), new ConsoleOutput()),
                   new ConventionDiscoverer())
         {
         }

@@ -24,7 +24,7 @@ namespace Shock.Conventions
                 TaskRunner = new DefaultTaskExecutor(),
                 TaskDiscoverer = new DefaultTaskDiscoverer(),
                 TaskSelector = new SelectTasksToRun(),
-                Output = new Console()
+                Output = new ConsoleOutput()
             };
         }
     }

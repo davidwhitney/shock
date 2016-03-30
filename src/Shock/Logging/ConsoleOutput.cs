@@ -1,6 +1,6 @@
 namespace Shock.Logging
 {
-    public class Console : IOutput
+    public class ConsoleOutput : IOutput
     {
         public void WriteLine(string s)
         {

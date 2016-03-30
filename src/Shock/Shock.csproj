@@ -47,8 +47,10 @@
     <Compile Include="Activation\IDependencyResolver.cs" />
     <Compile Include="AppDomainShims\AppDomainWrapper.cs" />
     <Compile Include="AppDomainShims\AssemblyWrapper.cs" />
+    <Compile Include="AppDomainShims\FileSystemWrapper.cs" />
     <Compile Include="AppDomainShims\IAppDomainWrapper.cs" />
     <Compile Include="AppDomainShims\IAssemblyWrapper.cs" />
+    <Compile Include="AppDomainShims\IFileSystemWrapper.cs" />
     <Compile Include="ArgumentParsing\Arguments.cs" />
     <Compile Include="ArgumentParsing\DefaultArgumentParser.cs" />
     <Compile Include="ArgumentParsing\IArgumentParser.cs" />
@@ -58,7 +60,7 @@
     <Compile Include="EnvironmentDiscovery\DetectAndLoadRelevantAssemblies.cs" />
     <Compile Include="ExecutionEnvironment.cs" />
     <Compile Include="Execution\DefaultTaskExecutor.cs" />
-    <Compile Include="Logging\Console.cs" />
+    <Compile Include="Logging\ConsoleOutput.cs" />
     <Compile Include="Logging\IOutput.cs" />
     <Compile Include="Logging\ListOutput.cs" />
     <Compile Include="TaskDiscovery\DefaultTaskDiscoverer.cs" />

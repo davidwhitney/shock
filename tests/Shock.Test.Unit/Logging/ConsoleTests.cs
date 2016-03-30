@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Shock.Test.Unit.Logging
 {
-    public class ConsoleTests : Tests<Shock.Logging.Console>
+    public class ConsoleTests : Tests<Shock.Logging.ConsoleOutput>
     {
         [Test]
         public void WriteLine_WritesToConsole()
