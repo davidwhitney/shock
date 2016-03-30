@@ -54,7 +54,7 @@ namespace Shock.EnvironmentDiscovery
             }
             catch (Exception ex)
             {
-                _output.WriteLine($"Skipped loading '{assemblyFile}' because '{ex.Message}'");
+                _output.WriteLine($"Skipped loading '{assemblyFile}' because '{ex.Message}'.");
             }
         }
     }
