@@ -10,7 +10,10 @@ namespace Shock.Execution
         public List<MethodInfo> SelectTasksFrom(List<MethodInfo> tasksFromDomain, Arguments args)
         {
             var matchingTasks = new List<MethodInfo>();
+
+            matchingTasks.Add(tasksFromDomain.SingleOrDefault(x => x.DeclaringType != null && (x.DeclaringType.Name == "DefaultTask" && x.Name == "Run")));
             matchingTasks.AddRange(tasksFromDomain.Where(x => MatchesName(args, x)));
+            matchingTasks.RemoveAll(x => x == null);
 
             return matchingTasks;
         }

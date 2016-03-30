@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Shock.ArgumentParsing;
@@ -31,6 +32,16 @@ namespace Shock.Test.Unit.Execution
             var tasksToRun = Sut.SelectTasksFrom(_tasksFromDomain, Arguments.With("NoMatchingMethodName"));
 
             Assert.That(tasksToRun, Is.Empty);
+        }
+
+        [Test]
+        public void SelectTasksToRun_NoMatchingArgumentButDefaultPresent_ReturnsDefault()
+        {
+            _tasksFromDomain.Add(typeof(DefaultTask).GetMethod("Run"));
+
+            var tasksToRun = Sut.SelectTasksFrom(_tasksFromDomain, Arguments.With("NoMatchingMethodName"));
+
+            Assert.That(tasksToRun.Single(), Is.EqualTo(_tasksFromDomain[1]));
         }
 
         [Test]

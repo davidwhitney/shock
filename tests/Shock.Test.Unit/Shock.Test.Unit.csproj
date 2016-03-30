@@ -66,6 +66,7 @@
     <Compile Include="Execution\DefaultTaskExecutorTests.cs" />
     <Compile Include="Execution\SelectTasksToRunTests.cs" />
     <Compile Include="FakesAndStubs\AllTheseAreValidBecauseTypeEndsInTasks.cs" />
+    <Compile Include="FakesAndStubs\DefaultTask.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClass2.cs" />
     <Compile Include="FakesAndStubs\FakeTaskClassDueToAttributes.cs" />
