@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Shock.Conventions;
+using Shock.Execution;
 using Shock.TaskDiscovery;
+using SelectionFunc = System.Func<System.Collections.Generic.List<System.Reflection.MethodInfo>, System.Collections.Generic.Dictionary<string, object>, System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>;
 
 namespace Shock.Test.Unit.Conventions
 {
@@ -45,6 +47,18 @@ namespace Shock.Test.Unit.Conventions
             Assert.That(td.Matches, Is.Empty);
             Assert.That(td.ExcludeTypes, Is.Empty);
         }
+
+        [Test]
+        public void AdjustConventions_ClassThatModifiesSelectionRules_RulesAreModified()
+        {
+            var td = new SelectTasksToRun();
+            _conventions.TaskSelector = td;
+            var classes = new List<Type> {typeof (ClassThatRemovesDefaultSelectionRules)};
+
+            Sut.AdjustConventions(_conventions, classes);
+
+            Assert.That(td.Matches, Is.Empty);
+        }
     }
 
     public class ThisClassModifiesShockConventions
@@ -63,6 +77,14 @@ namespace Shock.Test.Unit.Conventions
         {
             matchRules.Clear();
             exclusionRules.Clear();
+        }
+    }
+
+    public class ClassThatRemovesDefaultSelectionRules
+    {
+        public void ConfigureTaskSelection(List<SelectionFunc> matchRules)
+        {
+            matchRules.Clear();
         }
     }
 }

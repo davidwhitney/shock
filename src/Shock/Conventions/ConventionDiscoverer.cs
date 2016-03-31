@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Shock.Execution;
 using Shock.TaskDiscovery;
 
 namespace Shock.Conventions
@@ -17,6 +18,7 @@ namespace Shock.Conventions
 
             // Ok interesting, they've decided not to take a direct dependency, what magic can we do now...
             ModifyTaskDiscoveryConventions(conventions, allAvailableTypes);
+            ModifyTaskSelectionConventions(conventions, allAvailableTypes);
 
             return conventions;
         }
@@ -36,6 +38,24 @@ namespace Shock.Conventions
                 var inst = Activator.CreateInstance(type);
                 type.GetMethod("ConfigureTaskDiscovery")
                     .Invoke(inst, new object[] {taskDiscoverer.Matches, taskDiscoverer.ExcludeTypes});
+            }
+        }
+
+        private static void ModifyTaskSelectionConventions(ActiveConventions conventions, List<Type> allAvailableTypes)
+        {
+            var taskDiscoverer = conventions.TaskSelector as SelectTasksToRun;
+            if (taskDiscoverer == null) return;
+
+            var discoveryModifier =
+                allAvailableTypes.Where(
+                    x => x.GetMethods().Any(m => m.Name == "ConfigureTaskSelection"))
+                    .ToList();
+
+            foreach (var type in discoveryModifier)
+            {
+                var inst = Activator.CreateInstance(type);
+                type.GetMethod("ConfigureTaskSelection")
+                    .Invoke(inst, new object[] {taskDiscoverer.Matches});
             }
         }
 
