@@ -23,7 +23,7 @@ namespace Shock.TaskDiscovery
             {
                 t => t.FullName.StartsWith("System."),
                 t => t.FullName.StartsWith("Accessibility."),
-                t => t.Namespace.StartsWith("Microsoft."),
+                t => t.FullName.StartsWith("Microsoft."),
                 t => t.Assembly.FullName.StartsWith("Shock, Version=")
             };
         }
