@@ -25,14 +25,15 @@ namespace Shock.Test.Unit.EnvironmentDiscovery
                 .Returns(()=> _currentDirectory.ToArray());
         }
 
-        [Test]
-        public void LoadEnvironmentFrom_LoadsEachDllInTheCliArgs()
+        [TestCase("abc.dll")]
+        [TestCase("abc.exe")]
+        public void LoadEnvironmentFrom_LoadsEachDllOrExeInTheCliArgs(string arg)
         {
-            var args = new List<string> { "abc.dll" };
+            var args = new List<string> { arg };
 
             Sut.LoadEnvironmentFrom(args.ToArray());
 
-            Assert.That(Sut.LoadedAssemblies[0].Name, Is.EqualTo("abc.dll"));
+            Assert.That(Sut.LoadedAssemblies[0].Name, Is.EqualTo(arg));
         }
 
         [Test]

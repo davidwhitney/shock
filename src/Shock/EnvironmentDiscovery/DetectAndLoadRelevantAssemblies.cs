@@ -27,10 +27,11 @@ namespace Shock.EnvironmentDiscovery
         public void LoadEnvironmentFrom(string[] args)
         {
             var loadThese = new List<string>();
-
-            if(args.FirstOrDefault(x => x.EndsWith(".dll")) != null)
+            
+            var firstDllOrExeArgument = args.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
+            if(firstDllOrExeArgument != null)
             {
-                loadThese.Add(args.FirstOrDefault(x => x.EndsWith(".dll")));
+                loadThese.Add(firstDllOrExeArgument);
             }
 
             loadThese.RemoveAll(x => x == null);
