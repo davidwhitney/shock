@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Shock.ArgumentParsing
 {
     public class DefaultArgumentParser : IArgumentParser
@@ -8,9 +10,26 @@ namespace Shock.ArgumentParsing
 
             var arguments = new Arguments(raw);
 
-            foreach (var value in raw)
+            for (int index = 0; index < raw.Length; index++)
             {
-                arguments.Add(value, new Arguments.Nothing());
+                var value = raw[index];
+
+                new [] 
+                {
+                    "--",
+                    "-",
+                    "/"
+                }.ToList().ForEach(prefix => value = value.StartsWith(prefix) ? value.Substring(prefix.Length) : value);
+
+                if (value.Contains("="))
+                {
+                    var parts = value.Split('=');
+                    arguments.Add(parts[0], parts[1]);
+                }
+                else
+                {
+                    arguments.Add(value, new Arguments.Nothing());
+                }
             }
 
             return arguments;
