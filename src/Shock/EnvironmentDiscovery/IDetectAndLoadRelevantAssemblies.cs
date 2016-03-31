@@ -4,6 +4,6 @@ namespace Shock.EnvironmentDiscovery
 {
     public interface IDetectAndLoadRelevantAssemblies
     {
-        void LoadEnvironmentFrom(string[] args);
+        AppDomain LoadEnvironmentFrom(string[] args);
     }
 }

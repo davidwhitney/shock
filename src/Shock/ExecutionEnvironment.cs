@@ -20,10 +20,10 @@ namespace Shock
 
         public ExecutionEnvironment(string[] cliArgs, IDetectAndLoadRelevantAssemblies envLoader, IConventionDiscoverer conventionDiscoverer)
         {
-            envLoader.LoadEnvironmentFrom(cliArgs);
+            var loadedDomain = envLoader.LoadEnvironmentFrom(cliArgs);
 
             Conventions = ActiveConventions.Default();
-            Conventions = conventionDiscoverer.AdjustConventions(Conventions);
+            Conventions = conventionDiscoverer.AdjustConventions(Conventions, loadedDomain.GetAssemblies().AllTypes());
 
             Defibrillator = new Defibrillator(
                 Conventions.TaskDiscoverer,

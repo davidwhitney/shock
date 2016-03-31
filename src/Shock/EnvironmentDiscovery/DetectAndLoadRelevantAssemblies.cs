@@ -24,7 +24,7 @@ namespace Shock.EnvironmentDiscovery
             _output = output;
         }
 
-        public void LoadEnvironmentFrom(string[] args)
+        public AppDomain LoadEnvironmentFrom(string[] args)
         {
             var loadThese = new List<string>();
             
@@ -43,6 +43,8 @@ namespace Shock.EnvironmentDiscovery
             }
 
             loadThese.ForEach(TryLoadIntoAppDomain);
+
+            return AppDomain.CurrentDomain;
         }
 
         private void TryLoadIntoAppDomain(string assemblyFile)
