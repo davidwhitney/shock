@@ -26,7 +26,6 @@ namespace Shock.ArgumentParsing
 
         public class Nothing { }
 
-        public bool Verbose => Keys.Any(k => k.ToLower() == "verbose" || k.ToLower() == "v");
         public bool Continue => Keys.Any(k => k.ToLower() == "continue");
         public bool Help => Keys.Any(k => k.ToLower() == "help" || k == "?");
         public bool Interactive => Keys.Any(k => k.ToLower() == "interactive");

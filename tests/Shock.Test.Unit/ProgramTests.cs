@@ -3,23 +3,22 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-namespace Shock.Test.Unit.Logging
+namespace Shock.Test.Unit
 {
     [TestFixture]
-    public class ConsoleTests : Tests<Shock.Logging.ConsoleOutput>
+    public class ProgramTests
     {
         [Test]
-        public void WriteLine_WritesToConsole()
+        public void Program_NoArgs_FindsAndRunsDefaultTask()
         {
             var sb = new StringBuilder();
             using (TextWriter tw = new StringWriter(sb))
             {
                 Console.SetOut(tw);
-
-                Sut.WriteLine("Hi");
+                Program.Main(new string[0]);
             }
 
-            Assert.That(sb.ToString(), Does.StartWith("Hi"));
+            Assert.That(sb.ToString(), Does.Contain("Executed: Shock.Test.Unit.FakesAndStubs.DefaultTask.Run"));
         }
     }
 }

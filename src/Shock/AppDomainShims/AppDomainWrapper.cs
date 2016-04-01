@@ -9,10 +9,5 @@ namespace Shock.AppDomainShims
         {
             AppDomain.CurrentDomain.Load(assemblyName);
         }
-
-        public Assembly[] CurrentDomainGetAssemblies()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies();
-        }
     }
 }

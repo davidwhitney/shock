@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoMoq;
 using Shock.Logging;
-using Console = System.Console;
 
 namespace Shock.Test.Unit
 {
@@ -29,8 +27,6 @@ namespace Shock.Test.Unit
                 .ForEach(ctor => ctor.GetParameters().ToList()
                     .ForEach(param =>
                     {
-                        Console.WriteLine("Freezing dependency: " + param.ParameterType.Name);
-
                         Fixture.Freeze(param.ParameterType);
                         Fixture.Freeze(typeof (Mock<>).MakeGenericType(param.ParameterType));
                     }));
