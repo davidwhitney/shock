@@ -40,8 +40,9 @@ namespace Shock.Test.Unit
         {
             _tasks.Clear();
 
-            Sut.Shock(_args);
+            var exitCode = Sut.Shock(_args);
 
+            Assert.That(exitCode, Is.EqualTo(ExitCodes.NoTasksRun));
             Assert.That(Sut.DiscoveredTasks.Count, Is.EqualTo(0));
             Assert.That(Output.Buffer, Does.Contain("usages:"));
             Assert.That(Output.Buffer.Count, Is.EqualTo(4));
@@ -52,37 +53,32 @@ namespace Shock.Test.Unit
         {
             _args.Raw = new[] { "" };
 
-            Sut.Shock(_args);
+            var exitCode = Sut.Shock(_args);
 
+            Assert.That(exitCode, Is.EqualTo(ExitCodes.Success));
             Assert.That(Sut.DiscoveredTasks.Count, Is.EqualTo(1));
             Assert.That(Sut.SelectedTasks.Count, Is.EqualTo(1));
             Assert.That(Sut.Results.Count, Is.EqualTo(1));
             Assert.That(Output.Buffer, Does.Contain("Executed: Shock.Test.Unit.FakesAndStubs.FakeTaskClass.DoSomething"));
         }
 
-        [Test]
-        public void Shock_NoArgsButMultipleTasks_DoesntExecuteReturnsHelp()
+        [TestCase("?")]
+        [TestCase("help")]
+        public void Shock_QuestionMarkOrHelp_DoesntExecuteReturnsHelp(string arg)
         {
             _tasks.Add(typeof(FakeTaskClass).GetMethod("DoSomethingWithAReturnValue"));
             _args.Clear();
+            _args.Add(arg, "");
 
-            Sut.Shock(_args);
+            var exitCode = Sut.Shock(_args);
 
+            Assert.That(exitCode, Is.EqualTo(ExitCodes.NoTasksRun));
             Assert.That(Sut.Results, Is.Empty);
             Assert.That(Output.Buffer, Does.Contain("usages:"));
             Assert.That(Output.Buffer, Does.Contain("tasks:" + Environment.NewLine));
             _tasks.ForEach(x => Assert.That(Sut.DiscoveredTasks, Does.Contain(x)));
         }
-
-        [Test]
-        public void Shock_DiscoversTasksButNoneAreSelectedDueToInappropriateCliArgs_PrintsTasks()
-        {
-            _args.Raw = new[] {""};
-
-            Sut.Shock(_args);
-
-            Assert.That(Output.Buffer, Is.Not.Empty);
-        }
+        
 
         [Test]
         public void Shock_TaskThrowsAnErrorButContinueArgPresent_ContinuesProcessing()
@@ -91,8 +87,9 @@ namespace Shock.Test.Unit
             _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("Throw"));
             _args.Add("continue", "");
 
-            Sut.Shock(_args);
+            var exitCode = Sut.Shock(_args);
 
+            Assert.That(exitCode, Is.EqualTo(ExitCodes.Success));
             Assert.That(Sut.Results.Count, Is.EqualTo(2));
         }
 
@@ -101,11 +98,23 @@ namespace Shock.Test.Unit
         {
             Sut.Executor = new DefaultTaskExecutor();
             _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("Throw"));
-            _args.Add("continue", "");
+
+            var exitCode = Sut.Shock(_args);
+
+            Assert.That(exitCode, Is.EqualTo(ExitCodes.Failed));
+            Assert.That(Sut.Results.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Shock_TaskThrowsAnError_WritesExceptionDetails()
+        {
+            Sut.Executor = new DefaultTaskExecutor();
+            _tasks.Clear();
+            _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("Throw"));
 
             Sut.Shock(_args);
 
-            Assert.That(Sut.Results.Count, Is.EqualTo(2));
+            Assert.That(Output.Buffer[1], Does.Contain("System.NotImplementedException: Nope!"));
         }
     }
 }

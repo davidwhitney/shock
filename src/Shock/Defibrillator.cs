@@ -34,20 +34,21 @@ namespace Shock
             _usage = new UsageExamples(_output);
         }
         
-        public void Shock(Arguments args)
+        public ExitCodes Shock(Arguments args)
         {
             DiscoveredTasks = _discoverer.FindTasks(args);
             if (!DiscoveredTasks.Any())
             {
                 _usage.Basic();
-                return;
+                return ExitCodes.NoTasksRun;
             }
 
             SelectedTasks = _taskSelector.SelectTasksFrom(DiscoveredTasks, args);
-            if (SelectedTasks.Count != 1 && !args.Any())
+
+            if (args.Help || !SelectedTasks.Any())
             {
                 _usage.Tasks(DiscoveredTasks);
-                return;
+                return ExitCodes.NoTasksRun;
             }
 
             foreach (var task in SelectedTasks)
@@ -56,12 +57,25 @@ namespace Shock
                 Results.Add(result);
                 _output.WriteLine($"{(result.ExecutedSuccessfully ? "Executed" : "Failed")}: {result.Method.DeclaringType.FullName}.{result.Method.Name}");
 
+                if (!result.ExecutedSuccessfully)
+                {
+                    _output.WriteLine(result.Exception.ToString());
+                }
+
                 if (!result.ExecutedSuccessfully && !args.Continue)
                 {
-                    break;
+                    return ExitCodes.Failed;
                 }
             }
+
+            return ExitCodes.Success;
         }
-        
+    }
+
+    public enum ExitCodes
+    {
+        Failed = -1,
+        Success = 0,
+        NoTasksRun = 1,
     }
 }
