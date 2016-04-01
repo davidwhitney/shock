@@ -9,12 +9,13 @@ namespace Shock
             using (var env = new ExecutionEnvironment(cliArgs))
             {
                 var args = env.Conventions.ArgumentParser.Parse(cliArgs);
-                env.Defibrillator.Shock(args);
+                Environment.ExitCode = (int)env.Defibrillator.Shock(args);
 
-                #if DEBUG
-                Console.WriteLine("Press ANY key to exit.");
-                Console.ReadKey();
-                #endif
+                if (args.Interactive)
+                {
+                    Console.WriteLine("Press ANY key to exit.");
+                    Console.ReadKey();
+                }
             }
         }
     }

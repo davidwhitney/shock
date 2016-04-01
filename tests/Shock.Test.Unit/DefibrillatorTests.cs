@@ -78,7 +78,6 @@ namespace Shock.Test.Unit
             Assert.That(Output.Buffer, Does.Contain("tasks:" + Environment.NewLine));
             _tasks.ForEach(x => Assert.That(Sut.DiscoveredTasks, Does.Contain(x)));
         }
-        
 
         [Test]
         public void Shock_TaskThrowsAnErrorButContinueArgPresent_ContinuesProcessing()

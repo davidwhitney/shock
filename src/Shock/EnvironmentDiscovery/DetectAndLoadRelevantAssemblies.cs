@@ -54,6 +54,8 @@ namespace Shock.EnvironmentDiscovery
                 var assemblyName = _assembly.AssemblyNameGetAssemblyName(assemblyFile);
                 _appDomain.CurrentDomainLoad(assemblyName);
                 LoadedAssemblies.Add(assemblyName);
+
+                _output.WriteLine("Loaded " + assemblyFile);
             }
             catch (Exception ex)
             {
