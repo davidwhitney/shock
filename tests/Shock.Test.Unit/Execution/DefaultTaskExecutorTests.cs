@@ -7,6 +7,8 @@ namespace Shock.Test.Unit.Execution
     [TestFixture]
     public class DefaultTaskExecutorTests : Tests<DefaultTaskExecutor>
     {
+        private static string _argRequired;
+
         [Test]
         public void TryExecuteTask_MethodDoesNotThrow_ReturnsSuccess()
         {
@@ -22,11 +24,12 @@ namespace Shock.Test.Unit.Execution
         public void TryExecuteTask_MethodRequiresParam_Executes()
         {
             var method = GetType().GetMethod("RequiresAnArgument");
-            var args = Arguments.With("args", "hi");
+            var args = Arguments.With("arg", "hi");
 
             var result = Sut.TryExecuteTask(method, args);
 
             Assert.That(result.ExecutedSuccessfully, Is.True);
+            Assert.That(_argRequired, Is.EqualTo("hi"));
         }
 
         [Test]
@@ -43,6 +46,6 @@ namespace Shock.Test.Unit.Execution
 
         public void DoesntThrow() { }
         public void Throws() { throw new AssertionException("aha"); }
-        public void RequiresAnArgument(string arg) { }
+        public void RequiresAnArgument(string arg) { _argRequired = arg; }
     }
 }
