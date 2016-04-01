@@ -26,6 +26,7 @@ namespace Shock.EnvironmentDiscovery
 
         public AppDomain LoadEnvironmentFrom(string[] args)
         {
+            var verbose = args.Any(x => x.ToLower().Contains("verbose"));
             var loadThese = new List<string>();
             
             var firstDllOrExeArgument = args.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
@@ -42,12 +43,12 @@ namespace Shock.EnvironmentDiscovery
                 loadThese.AddRange(currentDirFiles.Where(x => x.EndsWith(".dll")));
             }
 
-            loadThese.ForEach(TryLoadIntoAppDomain);
+            loadThese.ForEach(a => TryLoadIntoAppDomain(a, verbose));
 
             return AppDomain.CurrentDomain;
         }
 
-        private void TryLoadIntoAppDomain(string assemblyFile)
+        private void TryLoadIntoAppDomain(string assemblyFile, bool verbose)
         {
             try
             {
@@ -55,11 +56,17 @@ namespace Shock.EnvironmentDiscovery
                 _appDomain.CurrentDomainLoad(assemblyName);
                 LoadedAssemblies.Add(assemblyName);
 
-                _output.WriteLine("Loaded " + assemblyFile);
+                if (verbose)
+                {
+                    _output.WriteLine("Loaded " + assemblyFile);
+                }
             }
             catch (Exception ex)
             {
-                _output.WriteLine($"Skipped loading '{assemblyFile}' because '{ex.Message}'.");
+                if (verbose)
+                {
+                    _output.WriteLine($"Skipped loading '{assemblyFile}' because '{ex.Message}'.");
+                }
             }
         }
     }

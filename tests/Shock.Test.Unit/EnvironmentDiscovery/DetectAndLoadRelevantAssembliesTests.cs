@@ -42,19 +42,19 @@ namespace Shock.Test.Unit.EnvironmentDiscovery
             _currentDirectory.Add("discovered1.dll");
             _currentDirectory.Add("discovered2.dll");
 
-            Sut.LoadEnvironmentFrom(new List<string>().ToArray());
+            Sut.LoadEnvironmentFrom(new List<string> {"verbose"}.ToArray());
 
             Assert.That(Sut.LoadedAssemblies[0].Name, Is.EqualTo("discovered1.dll"));
             Assert.That(Sut.LoadedAssemblies[1].Name, Is.EqualTo("discovered2.dll"));
         }
 
         [Test]
-        public void LoadEnvironmentFrom_FailsToLoadAssembly_DoesntCrashAndLogs()
+        public void LoadEnvironmentFrom_FailsToLoadAssemblyInVerboseMode_DoesntCrashAndLogs()
         {
             _currentDirectory.Add("discovered1.dll");
             Mock<IAssemblyWrapper>().Setup(x => x.AssemblyNameGetAssemblyName(It.IsAny<string>())).Throws<Exception>();
 
-            Sut.LoadEnvironmentFrom(new List<string>().ToArray());
+            Sut.LoadEnvironmentFrom(new List<string> {"verbose"}.ToArray());
 
             Assert.That(Sut.LoadedAssemblies, Is.Empty);
             Assert.That(Output.Buffer, Does.Contain("Skipped loading 'discovered1.dll' because 'Exception of type 'System.Exception' was thrown.'."));
