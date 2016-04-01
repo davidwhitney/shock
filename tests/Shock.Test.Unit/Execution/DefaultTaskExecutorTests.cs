@@ -33,6 +33,18 @@ namespace Shock.Test.Unit.Execution
         }
 
         [Test]
+        public void TryExecuteTask_MethodRequiresParamsOfMultipleTypes_Executes()
+        {
+            var method = GetType().GetMethod("RequiresAnArgumentOfTypes");
+            var args = Arguments.With("aString", "hi");
+            args.Add("anInt", "1");
+
+            var result = Sut.TryExecuteTask(method, args);
+
+            Assert.That(result.ExecutedSuccessfully, Is.True);
+        }
+
+        [Test]
         public void TryExecuteTask_MethodThrows_ReturnsFailure()
         {
             var method = GetType().GetMethod("Throws");
@@ -47,5 +59,6 @@ namespace Shock.Test.Unit.Execution
         public void DoesntThrow() { }
         public void Throws() { throw new AssertionException("aha"); }
         public void RequiresAnArgument(string arg) { _argRequired = arg; }
+        public void RequiresAnArgumentOfTypes(string aString, int anInt) { }
     }
 }
