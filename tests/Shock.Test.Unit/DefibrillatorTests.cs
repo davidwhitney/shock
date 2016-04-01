@@ -64,7 +64,7 @@ namespace Shock.Test.Unit
         public void Shock_NoArgsButMultipleTasks_DoesntExecuteReturnsHelp()
         {
             _tasks.Add(typeof(FakeTaskClass).GetMethod("DoSomethingWithAReturnValue"));
-            _args.Raw = new[] { "" };
+            _args.Clear();
 
             Sut.Shock(_args);
 

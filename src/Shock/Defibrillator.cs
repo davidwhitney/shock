@@ -44,7 +44,7 @@ namespace Shock
             }
 
             SelectedTasks = _taskSelector.SelectTasksFrom(DiscoveredTasks, args);
-            if (SelectedTasks.Count != 1)
+            if (SelectedTasks.Count != 1 && args.Count == 0)
             {
                 _usage.Tasks(DiscoveredTasks);
                 return;
