@@ -45,7 +45,7 @@ namespace Shock.Test.Unit
             Assert.That(exitCode, Is.EqualTo(ExitCodes.NoTasksRun));
             Assert.That(Sut.DiscoveredTasks.Count, Is.EqualTo(0));
             Assert.That(Output.Buffer, Does.Contain("usages:"));
-            Assert.That(Output.Buffer.Count, Is.EqualTo(4));
+            Assert.That(Output.Buffer.Count, Is.AtLeast(4));
         }
 
         [Test]
