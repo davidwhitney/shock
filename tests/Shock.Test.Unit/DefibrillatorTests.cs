@@ -83,5 +83,29 @@ namespace Shock.Test.Unit
 
             Assert.That(Output.Buffer, Is.Not.Empty);
         }
+
+        [Test]
+        public void Shock_TaskThrowsAnErrorButContinueArgPresent_ContinuesProcessing()
+        {
+            Sut.Executor = new DefaultTaskExecutor();
+            _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("Throw"));
+            _args.Add("continue", "");
+
+            Sut.Shock(_args);
+
+            Assert.That(Sut.Results.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Shock_TaskThrowsAnError_OnlyProcessesUpToFailingTask()
+        {
+            Sut.Executor = new DefaultTaskExecutor();
+            _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("Throw"));
+            _args.Add("continue", "");
+
+            Sut.Shock(_args);
+
+            Assert.That(Sut.Results.Count, Is.EqualTo(2));
+        }
     }
 }

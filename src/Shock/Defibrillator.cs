@@ -13,11 +13,11 @@ namespace Shock
     {
         private readonly IDiscoverTasks _discoverer;
         private readonly ISelectTasksToRun _taskSelector;
-        private readonly IExecuteATask _executor;
         private readonly IOutput _output;
         private readonly UsageExamples _usage;
 
-        public List<MethodInfo> DiscoveredTasks { get; private set; } = new List<MethodInfo>(); 
+        public IExecuteATask Executor { get; set; }
+        public List<MethodInfo> DiscoveredTasks { get; private set; } = new List<MethodInfo>();
         public List<MethodInfo> SelectedTasks { get; private set; } = new List<MethodInfo>();
         public List<TaskStatus> Results { get; private set; } = new List<TaskStatus>();
 
@@ -29,7 +29,7 @@ namespace Shock
         {
             _discoverer = discoverer;
             _taskSelector = taskSelector;
-            _executor = executor;
+            Executor = executor;
             _output = output;
             _usage = new UsageExamples(_output);
         }
@@ -44,23 +44,24 @@ namespace Shock
             }
 
             SelectedTasks = _taskSelector.SelectTasksFrom(DiscoveredTasks, args);
-            if (SelectedTasks.Count != 1 && args.Count == 0)
+            if (SelectedTasks.Count != 1 && !args.Any())
             {
                 _usage.Tasks(DiscoveredTasks);
                 return;
             }
 
-            Results = SelectedTasks.Select(t => _executor.TryExecuteTask(t, args)).ToList();
-            ReportResults();
-        }
-
-        private void ReportResults()
-        {
-            foreach (var result in Results)
+            foreach (var task in SelectedTasks)
             {
-                var msg = result.ExecutedSuccessfully ? "Executed" : "Failed";
-                _output.WriteLine($"{msg}: {result.Method.DeclaringType.FullName}.{result.Method.Name}");
+                var result = Executor.TryExecuteTask(task, args);
+                Results.Add(result);
+                _output.WriteLine($"{(result.ExecutedSuccessfully ? "Executed" : "Failed")}: {result.Method.DeclaringType.FullName}.{result.Method.Name}");
+
+                if (!result.ExecutedSuccessfully && !args.Continue)
+                {
+                    break;
+                }
             }
         }
+        
     }
 }
