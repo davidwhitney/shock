@@ -16,47 +16,19 @@ namespace Shock.Conventions
                 return conventions;
             }
 
-            // Ok interesting, they've decided not to take a direct dependency, what magic can we do now...
-            ModifyTaskDiscoveryConventions(conventions, allAvailableTypes);
-            ModifyTaskSelectionConventions(conventions, allAvailableTypes);
+            var taskDiscoverer = conventions.TaskDiscoverer as DefaultTaskDiscoverer;
+            if (taskDiscoverer != null)
+            {
+                allAvailableTypes.ReflectAndExecute("ConfigureTaskDiscovery", taskDiscoverer.Matches, taskDiscoverer.ExcludeTypes);
+            }
+
+            var taskSelector = conventions.TaskSelector as SelectTasksToRun;
+            if (taskSelector != null)
+            {
+                allAvailableTypes.ReflectAndExecute("ConfigureTaskSelection", taskSelector.Matches);
+            }
 
             return conventions;
-        }
-
-        private static void ModifyTaskDiscoveryConventions(ActiveConventions conventions, List<Type> allAvailableTypes)
-        {
-            var taskDiscoverer = conventions.TaskDiscoverer as DefaultTaskDiscoverer;
-            if (taskDiscoverer == null) return;
-
-            var discoveryModifier =
-                allAvailableTypes.Where(
-                    x => x.GetMethods().Any(m => m.Name == "ConfigureTaskDiscovery"))
-                    .ToList();
-
-            foreach (var type in discoveryModifier)
-            {
-                var inst = Activator.CreateInstance(type);
-                type.GetMethod("ConfigureTaskDiscovery")
-                    .Invoke(inst, new object[] {taskDiscoverer.Matches, taskDiscoverer.ExcludeTypes});
-            }
-        }
-
-        private static void ModifyTaskSelectionConventions(ActiveConventions conventions, List<Type> allAvailableTypes)
-        {
-            var taskDiscoverer = conventions.TaskSelector as SelectTasksToRun;
-            if (taskDiscoverer == null) return;
-
-            var discoveryModifier =
-                allAvailableTypes.Where(
-                    x => x.GetMethods().Any(m => m.Name == "ConfigureTaskSelection"))
-                    .ToList();
-
-            foreach (var type in discoveryModifier)
-            {
-                var inst = Activator.CreateInstance(type);
-                type.GetMethod("ConfigureTaskSelection")
-                    .Invoke(inst, new object[] {taskDiscoverer.Matches});
-            }
         }
 
         private static bool ExecuteAnyConventionModifyingClasses(ActiveConventions conventions, List<Type> allAvailableTypes)
@@ -82,6 +54,21 @@ namespace Shock.Conventions
             }
 
             return true;
+        }
+    }
+
+    public static class ReflectAndExecuteExtensions
+    {
+        public static void ReflectAndExecute(this List<Type> types, string name, params object[] args)
+        {
+            var found = types.Where(x => x.GetMethods().Any(m => m.Name == name)).ToList();
+
+            foreach (var type in found)
+            {
+                var inst = Activator.CreateInstance(type);
+                type.GetMethod(name)
+                    .Invoke(inst, args);
+            }
         }
     }
 }
