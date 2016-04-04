@@ -14,14 +14,24 @@ namespace Shock.AppDomainShims
             return FindTasks(d, args, AppDomain.CurrentDomain.GetAssemblies());
         }
 
-        public static List<Type> AllTypes(this IEnumerable<Assembly> fromAssemblies)
+        public static IEnumerable<Type> AllTypes(this IEnumerable<Assembly> fromAssemblies)
         {
-            return fromAssemblies.SelectMany(a => a.GetTypes()).ToList();
+            var types = new List<Type>();
+            foreach (var assembly in fromAssemblies)
+            {
+                try
+                {
+                    var assemblyTypes = assembly.GetTypes();
+                    types.AddRange(assemblyTypes);
+                }
+                catch{ /* ' V ' */}
+            }
+            return types;
         }
 
         public static List<MethodInfo> FindTasks(this IDiscoverTasks d, Arguments args, IEnumerable<Assembly> fromAssemblies)
         {
-            return d.FindTasks(args, fromAssemblies.SelectMany(a => a.GetTypes()).ToList());
+            return d.FindTasks(args, fromAssemblies.AllTypes().ToList());
         }
     }
 }

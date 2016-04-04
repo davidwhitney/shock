@@ -11,7 +11,7 @@ namespace Shock.Conventions
     {
         public ActiveConventions AdjustConventions(ActiveConventions conventions, List<Type> allAvailableTypes)
         {
-            if (ExecuteAnyConventionModifyingClasses(conventions, allAvailableTypes))
+            if (TryExecuteAnyConventionModifyingClasses(conventions, allAvailableTypes))
             {
                 return conventions;
             }
@@ -31,6 +31,18 @@ namespace Shock.Conventions
             return conventions;
         }
 
+        private static bool TryExecuteAnyConventionModifyingClasses(ActiveConventions conventions, List<Type> allAvailableTypes)
+        {
+            try
+            {
+                return ExecuteAnyConventionModifyingClasses(conventions, allAvailableTypes);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static bool ExecuteAnyConventionModifyingClasses(ActiveConventions conventions, List<Type> allAvailableTypes)
         {
             var typesFound = new Dictionary<Type, ConstructorInfo>();
@@ -48,12 +60,20 @@ namespace Shock.Conventions
 
             if (!typesFound.Any()) return false;
 
+            var success = true;
             foreach (var conventionAdjuster in typesFound)
             {
-                conventionAdjuster.Value.Invoke(new object[] {conventions});
+                try
+                {
+                    conventionAdjuster.Value.Invoke(new object[] {conventions});
+                }
+                catch
+                {
+                    success = false;
+                }
             }
 
-            return true;
+            return success;
         }
     }
 

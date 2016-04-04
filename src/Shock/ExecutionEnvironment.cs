@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Shock.AppDomainShims;
 using Shock.Conventions;
 using Shock.EnvironmentDiscovery;
@@ -23,7 +24,7 @@ namespace Shock
             var loadedDomain = envLoader.LoadEnvironmentFrom(cliArgs);
 
             Conventions = ActiveConventions.Default();
-            Conventions = conventionDiscoverer.AdjustConventions(Conventions, loadedDomain.GetAssemblies().AllTypes());
+            Conventions = conventionDiscoverer.AdjustConventions(Conventions, loadedDomain.GetAssemblies().AllTypes().ToList());
 
             Defibrillator = new Defibrillator(
                 Conventions.TaskDiscoverer,
