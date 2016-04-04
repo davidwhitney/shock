@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>$id$</id>
-    <version>$version$-rc</version>
+    <version>$version$</version>
     <authors>David Whitney</authors>
     <owners>David Whitney</owners>
     <projectUrl>https://github.com/davidwhitney/Shock</projectUrl>
