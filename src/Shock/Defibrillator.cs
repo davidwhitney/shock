@@ -74,8 +74,8 @@ namespace Shock
 
     public enum ExitCodes
     {
-        Failed = -1,
         Success = 0,
-        NoTasksRun = 1,
+        Failed = 1,
+        NoTasksRun = 2,
     }
 }

@@ -35,6 +35,14 @@ namespace Shock.Test.Unit.Execution
         }
 
         [Test]
+        public void SelectTasksToRun_OnlyOneTaskFoundAndNoMethodsSpecified_ReturnsSingleTask()
+        {
+            var tasksToRun = Sut.SelectTasksFrom(_tasksFromDomain, new Arguments());
+
+            Assert.That(tasksToRun, Does.Contain(_tasksFromDomain[0]));
+        }
+
+        [Test]
         public void SelectTasksToRun_NoMatchingArgumentButDefaultPresent_ReturnsDefault()
         {
             _tasksFromDomain.Add(typeof(DefaultTask).GetMethod("Run"));

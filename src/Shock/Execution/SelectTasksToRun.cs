@@ -15,7 +15,8 @@ namespace Shock.Execution
             Matches = new List<SelectionFunc>
             {
                 (candidates, args) => candidates.Where(x => x.DeclaringType != null && x.DeclaringType.Name == "DefaultTask" && x.Name == "Run"),
-                (candidates, args) => candidates.Where(x => MatchesName(args, x))
+                (candidates, args) => candidates.Where(x => MatchesName(args, x)),
+                (candidates, args) => candidates.Count == 1 && !args.Any() ? new [] { candidates.First() } : null
             };
         }
 
@@ -24,7 +25,11 @@ namespace Shock.Execution
             var matchingTasks = new List<MethodInfo>();
             foreach (var selectionRule in Matches)
             {
-                matchingTasks.AddRange(selectionRule(tasksFromDomain, args));
+                var methodInfos = selectionRule(tasksFromDomain, args);
+                if (methodInfos != null)
+                {
+                    matchingTasks.AddRange(methodInfos);
+                }
             }
             matchingTasks.RemoveAll(x => x == null);
 

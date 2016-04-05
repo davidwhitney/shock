@@ -205,9 +205,9 @@ Parameters can be any common primitive type.
 
 Shock returns the following exit codes - use them in your CI configuration / failure conditions.
 
-- Failed = -1
 - Success = 0
-- NoTasksRun = 1
+- Failed = 1
+- NoTasksRun = 2
 
 If multiple tasks are run and you pass the `-continue` argument a failed task will not stop execution, and you'll get a Success 0 exit code. If tasks fail, diagnostic output will be written to the console.
 
