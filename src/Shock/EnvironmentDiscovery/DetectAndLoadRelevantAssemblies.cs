@@ -14,9 +14,12 @@ namespace Shock.EnvironmentDiscovery
         private readonly IFileSystemWrapper _fs;
         private readonly IOutput _output;
 
+        private readonly List<string> _loadedPaths = new List<string>();
         public List<AssemblyName> LoadedAssemblies { get; } = new List<AssemblyName>();
+        public string ActiveAppConfiguration => AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString();
 
-        public DetectAndLoadRelevantAssemblies(IAppDomainWrapper appDomain, IAssemblyWrapper assembly, IFileSystemWrapper fs, IOutput output)
+        public DetectAndLoadRelevantAssemblies(IAppDomainWrapper appDomain, IAssemblyWrapper assembly,
+            IFileSystemWrapper fs, IOutput output)
         {
             _appDomain = appDomain;
             _assembly = assembly;
@@ -28,9 +31,9 @@ namespace Shock.EnvironmentDiscovery
         {
             var verbose = args.Any(x => x.ToLower().Contains("verbose"));
             var loadThese = new List<string>();
-            
+
             var firstDllOrExeArgument = args.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
-            if(firstDllOrExeArgument != null)
+            if (firstDllOrExeArgument != null)
             {
                 loadThese.Add(firstDllOrExeArgument);
             }
@@ -44,6 +47,7 @@ namespace Shock.EnvironmentDiscovery
             }
 
             loadThese.ForEach(a => TryLoadIntoAppDomain(a, verbose));
+            TryFindAndLoadConfig();
 
             return AppDomain.CurrentDomain;
         }
@@ -54,7 +58,9 @@ namespace Shock.EnvironmentDiscovery
             {
                 var assemblyName = _assembly.AssemblyNameGetAssemblyName(assemblyFile);
                 _appDomain.CurrentDomainLoad(assemblyName);
+
                 LoadedAssemblies.Add(assemblyName);
+                _loadedPaths.Add(assemblyFile);
 
                 if (verbose)
                 {
@@ -67,6 +73,34 @@ namespace Shock.EnvironmentDiscovery
                 {
                     _output.WriteLine($"Skipped loading '{assemblyFile}' because '{ex.Message}'.");
                 }
+            }
+        }
+
+        private void TryFindAndLoadConfig()
+        {
+            var searchPaths = new List<string>(_loadedPaths.Select(x=>x.Replace(".dll", ".dll.config")));
+            searchPaths.AddRange(new[] { "web.config", "app.config" });
+            var configsThatExist = searchPaths.Where(_fs.Exists).ToList();
+
+            foreach (var config in configsThatExist)
+            {
+                if (TrySetConfiguration(config))
+                {
+                    return;
+                }
+            }
+        }
+
+        private bool TrySetConfiguration(string config)
+        {
+            try
+            {
+                AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", config);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

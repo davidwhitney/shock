@@ -12,5 +12,10 @@ namespace Shock.AppDomainShims
             path = string.IsNullOrWhiteSpace(path) ? Directory.GetCurrentDirectory() : path;
             return Directory.GetFiles(path);
         }
+
+        public bool Exists(string path)
+        {
+            return File.Exists(path);
+        }
     }
 }

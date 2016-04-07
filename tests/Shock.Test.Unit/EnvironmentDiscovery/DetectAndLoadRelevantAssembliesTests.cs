@@ -4,6 +4,7 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Shock.AppDomainShims;
+using Shock.ArgumentParsing;
 using Shock.EnvironmentDiscovery;
 
 namespace Shock.Test.Unit.EnvironmentDiscovery
@@ -23,6 +24,10 @@ namespace Shock.Test.Unit.EnvironmentDiscovery
             Mock<IFileSystemWrapper>()
                 .Setup(x => x.DirectoryGetFiles(It.IsAny<string>()))
                 .Returns(()=> _currentDirectory.ToArray());
+
+            Mock<IFileSystemWrapper>()
+                .Setup(x => x.Exists(It.Is<string>(s => _currentDirectory.Contains(s))))
+                .Returns(true);
         }
 
         [TestCase("abc.dll")]
@@ -58,6 +63,53 @@ namespace Shock.Test.Unit.EnvironmentDiscovery
 
             Assert.That(Sut.LoadedAssemblies, Is.Empty);
             Assert.That(Output.Buffer, Does.Contain("Skipped loading 'discovered1.dll' because 'Exception of type 'System.Exception' was thrown.'."));
+        }
+
+        [Test]
+        public void LoadEnvironmentFrom_ConfgurationFoundThatMatchesDll_SetsAppDomainConfig()
+        {
+            _currentDirectory.Add("discovered1.dll");
+            _currentDirectory.Add("discovered1.dll.config");
+
+            Sut.LoadEnvironmentFrom(new List<string> { "verbose" }.ToArray());
+
+            Assert.That(Sut.ActiveAppConfiguration, Does.EndWith("discovered1.dll.config"));
+        }
+
+        [TestCase("web.config")]
+        [TestCase("app.config")]
+        public void LoadEnvironmentFrom_WebConfigFound_SetsAppDomainConfig(string appOrWebConfig)
+        {
+            _currentDirectory.Add(appOrWebConfig);
+
+            Sut.LoadEnvironmentFrom(new List<string> { "verbose" }.ToArray());
+
+            Assert.That(Sut.ActiveAppConfiguration, Does.EndWith(appOrWebConfig));
+        }
+
+        [TestCase("web.config")]
+        [TestCase("app.config")]
+        public void LoadEnvironmentFrom_ConfigurationFoundThatMatchesDllAndWebConfig_SetsDllConfig(string secondaryConfig)
+        {
+            _currentDirectory.Add("discovered1.dll");
+            _currentDirectory.Add("discovered1.dll.config");
+            _currentDirectory.Add(secondaryConfig);
+
+            Sut.LoadEnvironmentFrom(new string[0]);
+
+            Assert.That(Sut.ActiveAppConfiguration, Does.EndWith("discovered1.dll.config"));
+        }
+
+        [TestCase("web.config")]
+        [TestCase("app.config")]
+        public void LoadEnvironmentFrom_NoDllConfigurationFoundButWebConfigExists_SetsDllConfig(string secondaryConfig)
+        {
+            _currentDirectory.Add("discovered1.dll");
+            _currentDirectory.Add(secondaryConfig);
+
+            Sut.LoadEnvironmentFrom(new string[0]);
+
+            Assert.That(Sut.ActiveAppConfiguration, Does.EndWith(secondaryConfig));
         }
     }
 }
