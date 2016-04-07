@@ -105,6 +105,29 @@ namespace Shock.Test.Unit
         }
 
         [Test]
+        public void Shock_OneTaskPresentAndTaskReturnsAnExitCode_ExitCodeCascadesOutwards()
+        {
+            Sut.Executor = new DefaultTaskExecutor();
+            _tasks.Clear();
+            _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("ReturnsOneHundred"));
+
+            var exitCode = Sut.Shock(_args);
+
+            Assert.That((int)exitCode, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void Shock_MoreThanOneTaskPresentAndTaskReturnsAnExitCode_GenericExitCodeReturned()
+        {
+            Sut.Executor = new DefaultTaskExecutor();
+            _tasks.Insert(0, typeof(FakeTaskClass).GetMethod("ReturnsOneHundred"));
+
+            var exitCode = Sut.Shock(_args);
+
+            Assert.That(exitCode, Is.EqualTo(ExitCodes.Success));
+        }
+
+        [Test]
         public void Shock_TaskThrowsAnError_WritesExceptionDetails()
         {
             Sut.Executor = new DefaultTaskExecutor();

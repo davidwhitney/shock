@@ -22,5 +22,10 @@ namespace Shock.Test.Unit.FakesAndStubs
         {
             throw new NotImplementedException("Nope!");
         }
+
+        public int ReturnsOneHundred()
+        {
+            return 100;
+        }
     }
 }

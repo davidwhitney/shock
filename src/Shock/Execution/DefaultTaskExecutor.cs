@@ -13,8 +13,8 @@ namespace Shock.Execution
             {
                 var instance = Activator.CreateInstance(method.DeclaringType);
                 var parameters = GetMethodParameters(method, args);
-                method.Invoke(instance, parameters);
-                return new TaskStatus(method);
+                var result = method.Invoke(instance, parameters);
+                return new TaskStatus(method) {ReturnCode = result as int?};
             }
             catch (Exception ex)
             {

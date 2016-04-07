@@ -214,6 +214,8 @@ If multiple tasks are run and you pass the `-continue` argument a failed task wi
 
 You can force `shock` to wait for user input - `Press ANY key to exit` - so that you can read diagnostic output messages by passing the command line argument `-interactive`
 
+If a single task is selected, and the task returns an `int`, then it will be cascaded out as an exit code.
+
 # Modifying the conventions
 
 Before shock executes anything, it allows you to modify it's discovery and selection conventions in your client code.

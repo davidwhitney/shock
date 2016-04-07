@@ -68,6 +68,11 @@ namespace Shock
                 }
             }
 
+            if (Results.Count == 1 && Results.First().ReturnCode.HasValue)
+            {
+                return (ExitCodes)Results.First().ReturnCode.Value;
+            }
+
             return ExitCodes.Success;
         }
     }
