@@ -190,6 +190,7 @@ Shock executes a task if:
 
 - The declaring `class` is called `DefaultTask` and the name of the method `Run`
 - The `method name`, `full name` or the `classname and method name` is found passed as a command line argument
+- Only a single task was detected, and no command line arguments were provided (a lazy default).
 
 # Passing Parameters
 
