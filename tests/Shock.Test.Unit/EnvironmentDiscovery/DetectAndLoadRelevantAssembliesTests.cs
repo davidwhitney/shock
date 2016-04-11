@@ -89,7 +89,7 @@ namespace Shock.Test.Unit.EnvironmentDiscovery
 
         [TestCase("web.config")]
         [TestCase("app.config")]
-        public void LoadEnvironmentFrom_ConfigurationFoundThatMatchesDllAndWebConfig_SetsDllConfig(string secondaryConfig)
+        public void LoadEnvironmentFrom_ConfigurationFoundThatMatchesDllAndWebConfig_SetsWebConfig(string secondaryConfig)
         {
             _currentDirectory.Add("discovered1.dll");
             _currentDirectory.Add("discovered1.dll.config");
@@ -97,7 +97,7 @@ namespace Shock.Test.Unit.EnvironmentDiscovery
 
             Sut.LoadEnvironmentFrom(new string[0]);
 
-            Assert.That(Sut.ActiveAppConfiguration, Does.EndWith("discovered1.dll.config"));
+            Assert.That(Sut.ActiveAppConfiguration, Does.EndWith(secondaryConfig));
         }
 
         [TestCase("web.config")]

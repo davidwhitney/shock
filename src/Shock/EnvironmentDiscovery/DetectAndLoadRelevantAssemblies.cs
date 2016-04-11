@@ -78,8 +78,8 @@ namespace Shock.EnvironmentDiscovery
 
         private void TryFindAndLoadConfig()
         {
-            var searchPaths = new List<string>(_loadedPaths.Select(x=>x.Replace(".dll", ".dll.config")));
-            searchPaths.AddRange(new[] { "web.config", "app.config" });
+            var searchPaths = new List<string> { "..\\web.config", "web.config", "app.config"};
+            searchPaths.AddRange(_loadedPaths.Select(x => x.Replace(".dll", ".dll.config")));
             var configsThatExist = searchPaths.Where(_fs.Exists).ToList();
 
             foreach (var config in configsThatExist)
