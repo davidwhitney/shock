@@ -96,6 +96,7 @@ namespace Shock.EnvironmentDiscovery
             try
             {
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", config);
+                _output.WriteLine("Loaded configuration file: " + config);
                 return true;
             }
             catch (Exception)
