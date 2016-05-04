@@ -19,7 +19,7 @@ namespace Shock
         public IExecuteATask Executor { get; set; }
         public List<MethodInfo> DiscoveredTasks { get; private set; } = new List<MethodInfo>();
         public List<MethodInfo> SelectedTasks { get; private set; } = new List<MethodInfo>();
-        public List<TaskStatus> Results { get; private set; } = new List<TaskStatus>();
+        public List<TaskStatus> Results { get; } = new List<TaskStatus>();
 
         public Defibrillator(
             IDiscoverTasks discoverer,
@@ -55,7 +55,7 @@ namespace Shock
             {
                 var result = Executor.TryExecuteTask(task, args);
                 Results.Add(result);
-                _output.WriteLine($"{(result.ExecutedSuccessfully ? "Executed" : "Failed")}: {result.Method.DeclaringType.FullName}.{result.Method.Name}");
+                _output.WriteLine($"{(result.ExecutedSuccessfully ? "Executed" : "Failed")}: {result.Method.DeclaringType?.FullName}.{result.Method.Name}");
 
                 if (!result.ExecutedSuccessfully)
                 {
@@ -68,9 +68,10 @@ namespace Shock
                 }
             }
 
-            if (Results.Count == 1 && Results.First().ReturnCode.HasValue)
+            var singleResult = Results.Count == 1 ? Results.Single() : null;
+            if (singleResult?.ReturnCode != null)
             {
-                return (ExitCodes)Results.First().ReturnCode.Value;
+                return (ExitCodes)singleResult.ReturnCode.Value;
             }
 
             return ExitCodes.Success;
